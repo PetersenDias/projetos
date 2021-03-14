@@ -8,18 +8,52 @@
     <link rel="stylesheet" href="TemplateData/style.css">
     <script src="TemplateData/UnityProgress.js"></script>
     <script src="Build/UnityLoader.js"></script>
+      <style>
+    .mainHtmlBody {
+      margin: 0;
+      padding: 0;
+      background-color: black;
+    }
+  </style>
     <script>
       var unityInstance = UnityLoader.instantiate("unityContainer", "Build/Planetas.json", {onProgress: UnityProgress});
     </script>
+    <script>
+    function resizeCanvas() {
+      const unityContainer = document.getElementById("unityContainer");
+
+      let w; let h;
+      w = window.innerWidth;
+      h = w * 9 / 16;
+
+      if (h > window.innerHeight) {
+        h = window.innerHeight;
+        w = h * 16 / 9;
+      }
+
+      w = Math.ceil(w);
+      h = Math.ceil(h);
+
+      const margin_top = (window.innerHeight - h) / 2;
+      const margin_left = (window.innerWidth - w) / 2;
+
+      updateContainerValues(unityContainer, w, h, margin_top, margin_left);
+
+    }
+    function updateContainerValues(container, width, height, marginTop, marginLeft) {
+      if (container) {
+        container.style.width = width + "px";
+        container.style.height = height + "px";
+        container.style.marginTop = marginTop + "px";
+        container.style.marginLeft = marginLeft + "px";
+      }
+    }
+
+  </script>
   </head>
-  <body>
+ <body class="mainHtmlBody" onload="resizeCanvas();" onresize="resizeCanvas()">
     <div class="webgl-content">
       <div id="unityContainer" style="width: 960px; height: 600px"></div>
-      <div class="footer">
-        <div class="webgl-logo"></div>
-        <div class="fullscreen" onclick="unityInstance.SetFullscreen(1)"></div>
-        <div class="title">Planetas</div>
-      </div>
     </div>
   </body>
 </html>
